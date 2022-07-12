@@ -23,3 +23,28 @@
 а затем запустить эту функцию в разных потоках для разных
 IP-адресов с помощью concurrent.futures (это надо сделать в функции ping_ip_addresses).
 """
+
+from concurrent.futures import *
+from ping3 import ping
+
+
+# ping
+def pinger(host):
+    result = ping(host)
+    if result:
+        return True
+    else:
+        return False
+
+
+def ping_ip_addresses(ip_list, limit=3):
+    with ThreadPoolExecutor(limit) as executor:
+        result = executor.map(pinger, ip_list)
+        accessible = []
+        non_accessible = []
+        for ip, output in zip(ip_list, result):
+            if output:
+                accessible.append(ip)
+            else:
+                non_accessible.append(ip)
+    return accessible, non_accessible
