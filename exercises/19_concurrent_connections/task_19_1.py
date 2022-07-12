@@ -47,4 +47,4 @@ def ping_ip_addresses(ip_list, limit=3):
                 accessible.append(ip)
             else:
                 non_accessible.append(ip)
-    return accessible, non_accessible
+        return accessible, non_accessible
